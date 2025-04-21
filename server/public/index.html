@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVPR Image Processing</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>CVPR Image Processing</h1>
+      <p>Upload an image and apply various processing techniques</p>
+    </header>
+    
+    <div class="upload-section">
+      <label for="image-upload" class="upload-label">
+        <div id="upload-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+          </svg>
+          <p>Click to upload or drag & drop</p>
+          <p class="small">Supported formats: JPG, PNG, WEBP</p>
+        </div>
+        <img id="preview-image" style="display: none;">
+        <input type="file" id="image-upload" accept="image/*" style="display: none;">
+      </label>
+    </div>
+    
+    <div class="process-section">
+      <div class="process-types">
+        <h2>Select Process</h2>
+        <div class="process-options">
+          <label>
+            <input type="radio" name="process-type" value="grayscale" checked>
+            <span>Grayscale</span>
+          </label>
+          <label>
+            <input type="radio" name="process-type" value="blur">
+            <span>Blur</span>
+          </label>
+          <label>
+            <input type="radio" name="process-type" value="edge_detection">
+            <span>Edge Detection</span>
+          </label>
+          <label>
+            <input type="radio" name="process-type" value="threshold">
+            <span>Threshold</span>
+          </label>
+          <label>
+            <input type="radio" name="process-type" value="scaling">
+            <span>Scaling</span>
+          </label>
+          <label>
+            <input type="radio" name="process-type" value="ai_upscale">
+            <span>AI Upscaling</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="process-parameters">
+        <h2>Parameters</h2>
+        
+        <!-- Blur parameters -->
+        <div id="blur-controls" style="display: none;">
+          <label for="blur-strength">Blur Strength: <span id="blur-strength-value">2</span></label>
+          <input type="range" id="blur-strength" min="0.5" max="10" step="0.5" value="2">
+        </div>
+        
+        <!-- Scaling parameters -->
+        <div id="scaling-controls" style="display: none;">
+          <label for="scale-factor">Scale Factor: <span id="scale-factor-value">2</span></label>
+          <input type="range" id="scale-factor" min="0.5" max="4" step="0.5" value="2">
+          
+          <label for="scaling-method">Method:</label>
+          <select id="scaling-method">
+            <option value="bicubic">Bicubic</option>
+            <option value="bilinear">Bilinear</option>
+            <option value="nearest">Nearest Neighbor</option>
+            <option value="lanczos">Lanczos</option>
+          </select>
+        </div>
+        
+        <!-- AI Upscaling parameters -->
+        <div id="ai-upscale-controls" style="display: none;">
+          <label>Scale Factor:</label>
+          <div class="radio-buttons">
+            <label>
+              <input type="radio" name="ai-scale-factor" value="2" checked>
+              <span>2x</span>
+            </label>
+            <label>
+              <input type="radio" name="ai-scale-factor" value="4">
+              <span>4x</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <button id="process-button" disabled>Process Image</button>
+    </div>
+    
+    <div class="results-section">
+      <div class="result-container">
+        <h2>Original</h2>
+        <div id="original-container" class="image-container"></div>
+      </div>
+      
+      <div class="result-container">
+        <h2>Processed</h2>
+        <div id="processed-container" class="image-container"></div>
+      </div>
+      
+      <!-- Image Comparison Slider -->
+      <div class="comparison-container" id="comparison-container" style="display: none;">
+        <h2>Before & After Comparison</h2>
+        <div class="image-comparison-wrapper">
+          <div class="image-comparison-images">
+            <img class="comparison-image original-image" id="comparison-original">
+            <img class="comparison-image processed-image" id="comparison-processed">
+          </div>
+          <div class="comparison-controls">
+            <input type="range" id="comparison-slider" min="0" max="100" value="50" class="slider">
+            <div class="slider-labels">
+              <span>Original</span>
+              <span class="slider-value">50%</span>
+              <span>Enhanced</span>
+            </div>
+            <p class="comparison-description">
+              <i class="fa fa-info-circle"></i>
+              Move the slider to blend between the original and upscaled image. 
+              0% shows the original image, 100% shows the enhanced result.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="image-actions" style="display: none;">
+        <button id="download-btn">Download</button>
+        <button id="fullscreen-btn">Fullscreen</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Fullscreen Modal -->
+  <div id="fullscreen-modal" class="modal">
+    <span class="close-modal">&times;</span>
+    <img id="fullscreen-image" class="modal-content">
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html> 
